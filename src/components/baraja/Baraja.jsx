@@ -37,11 +37,9 @@ const initSoundDeletedCard = (selecTrack) => {
 };
 
 export const Baraja = ({ pos }) => {
-	const { cartasBaraja, setCartasBaraja } = useContext(contextBaraja);
+	const { cartasBaraja, setCartasBaraja, selectedCard, setSelectedCard } = useContext(contextBaraja);
 
 	const [cartasSprite, setCartasSprite] = useState([]);
-
-	const { selectedCard, setSelectedCard } = useContext(contextBaraja);
 
 	const isDragging = useRef(false);
 	const isRetorning = useRef(false);
@@ -52,8 +50,8 @@ export const Baraja = ({ pos }) => {
 	const app = useApp();
 
 	const createDataSprite = (data) => {
-		console.log("🚀 ~ file: Baraja.jsx:56 ~ createDataSprite ~ data:", data);
-		return data.map(({ img }, index) => {
+		if (data.length === 0) return;
+		return data.map(({ img, scale }, index) => {
 			return {
 				id: index,
 				img: img,
