@@ -3,7 +3,6 @@ const path = require("path");
 const webpack = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const entryPoints = {
 	VideoComponent: {
@@ -44,7 +43,7 @@ const bundlePath = path.resolve(__dirname, "build/");
 module.exports = (env, argv) => {
 	const entry = {};
 
-	let plugins = [new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ["build"] }), new webpack.HotModuleReplacementPlugin()];
+	let plugins = [new webpack.HotModuleReplacementPlugin()];
 
 	Object.keys(entryPoints).forEach((key) => {
 		if (entryPoints[key].build) {
@@ -89,12 +88,16 @@ module.exports = (env, argv) => {
 						"sass-loader", // compiles Sass to CSS, using Node Sass by default
 					],
 				},
+				// {
+				// 	test: /\.(jpe?g|png|gif|svg|mp3)$/i,
+				// 	loader: "file-loader",
+				// 	options: {
+				// 		name: "img/[name].[ext]",
+				// 	},
+				// },
 				{
-					test: /\.(jpe?g|png|gif|svg)$/i,
-					loader: "file-loader",
-					options: {
-						name: "img/[name].[ext]",
-					},
+					test: /\.(png|svg|jpg|jpeg|gif|ogg|mp3|wav)$/i,
+					type: "asset/resource",
 				},
 			],
 		},
@@ -108,8 +111,9 @@ module.exports = (env, argv) => {
 			},
 		},
 		output: {
-			filename: "[name].bandle.js",
+			filename: "[name].bundle.js",
 			path: bundlePath,
+			clean: true,
 		},
 		plugins,
 	};
