@@ -50,7 +50,9 @@ export const CardDetail = ({ id, image, name, scale, position, comprarCarta }) =
 				textCard.current = value;
 				return;
 			}
+
 			// Cargamos las texturas desde las url
+
 			PIXI.Assets.load(value)
 				.then((texture) => {
 					const newTexture = {
@@ -61,17 +63,21 @@ export const CardDetail = ({ id, image, name, scale, position, comprarCarta }) =
 					// Obtenemos un array con las texturas
 					arrayTextures.current = [...arrayTextures.current, newTexture];
 					arrayTextures.current.length === 5 && setImgSprt(arrayTextures.current);
+					return arrayTextures.current;
 				})
 				.catch((err) => console.log(err));
+
+			// Resolvemos todas las promesas y seteamos el array de texturas
+
+			// setPropsText(({ x, y, width, fontSize, ...prev }) => ({
+			// 	x: (scale.x * -32) / 0.14,
+			// 	y: 15,
+			// 	width: (scale.x * 75) / 0.16,
+			// 	fontSize: (scale.x * 8) / 0.16,
+			// 	...prev,
+			// }));
+			// Calculamos las proporciones del texto y las seteamos
 		});
-		// setPropsText(({ x, y, width, fontSize, ...prev }) => ({
-		// 	x: (scale.x * -32) / 0.14,
-		// 	y: 15,
-		// 	width: (scale.x * 75) / 0.16,
-		// 	fontSize: (scale.x * 8) / 0.16,
-		// 	...prev,
-		// }));
-		// Calculamos las proporciones del texto y las seteamos
 	};
 
 	useEffect(() => {

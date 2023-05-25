@@ -29,7 +29,7 @@ function ordenarSprites(tiendaCartas, columnas, ancho, alto) {
 }
 
 export const CardStoreList = ({ pos }) => {
-	const { tiendaCartas, setTiendaCartas, cartasCompradas, setCartasCompradas } = useContext(contextBaraja);
+	const { tiendaCartas, setTiendaCartas, cartasBaraja, setCartasBaraja } = useContext(contextBaraja);
 
 	const [areaStore, setAreaStore] = useState({ width: 0, height: 0 });
 	const containerTienda = useRef(null);
@@ -46,8 +46,8 @@ export const CardStoreList = ({ pos }) => {
 		eliminarCartaTienda(id);
 		// añadimos la carta a la zona de cartas compradas
 		const carta = tiendaCartas.find((carta) => carta.id === id);
-		const cartasCompradasNew = [...cartasCompradas, carta];
-		setCartasCompradas(cartasCompradasNew);
+		const cartasCompradasNew = [...cartasBaraja, carta];
+		setCartasBaraja(cartasCompradasNew);
 	};
 
 	const draw = (g) => {

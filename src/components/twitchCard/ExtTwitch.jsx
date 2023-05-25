@@ -29,7 +29,7 @@ const getPositionBaraja = () => {
 };
 
 const options = {
-	backgroundColor: 0xa3c2ff,
+	backgroundColor: 0x00000,
 	raf: false,
 	autoDensity: true,
 	antialias: true,
@@ -54,7 +54,7 @@ export const ExtTwitch = () => {
 	const [selectedCard, setSelectedCard] = useState(null);
 
 	const [tiendaCartas, setTiendaCartas] = useState(mockData);
-	const [cartasCompradas, setCartasCompradas] = useState([]);
+	//const [cartasCompradas, setCartasCompradas] = useState([]);
 	const [cartasBaraja, setCartasBaraja] = useState([]);
 
 	const containerBarajaRef = useRef(null);
@@ -81,14 +81,12 @@ export const ExtTwitch = () => {
 				setSelectedCard,
 				tiendaCartas,
 				setTiendaCartas,
-				cartasCompradas,
-				setCartasCompradas,
 				cartasBaraja,
 				setCartasBaraja,
 			}}>
 			<Stage {...initialSize} options={options}>
 				<Container sortableChildren={true} interactive={true} ref={containerBarajaRef}>
-					<PurchasedCards />
+					{/* <PurchasedCards /> */}
 					<CardStore />
 
 					<Baraja pos={getPositionBaraja()} />
