@@ -44,7 +44,10 @@ const bundlePath = path.resolve(__dirname, "build/");
 module.exports = (env, argv) => {
 	const entry = {};
 
-	let plugins = [new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ["build"] }), new webpack.HotModuleReplacementPlugin()];
+	let plugins = [
+		new CleanWebpackPlugin({ dry: true, cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), "build/**/*")] }),
+		new webpack.HotModuleReplacementPlugin(),
+	];
 
 	Object.keys(entryPoints).forEach((key) => {
 		if (entryPoints[key].build) {
@@ -89,12 +92,16 @@ module.exports = (env, argv) => {
 						"sass-loader", // compiles Sass to CSS, using Node Sass by default
 					],
 				},
+				// {
+				// 	test: /\.(jpe?g|png|gif|svg|mp3)$/i,
+				// 	loader: "file-loader",
+				// 	options: {
+				// 		name: "img/[name].[ext]",
+				// 	},
+				// },
 				{
-					test: /\.(jpe?g|png|gif|svg)$/i,
-					loader: "file-loader",
-					options: {
-						name: "img/[name].[ext]",
-					},
+					test: /\.(png|svg|jpg|jpeg|gif|ogg|mp3|wav)$/i,
+					type: "asset/resource",
 				},
 			],
 		},

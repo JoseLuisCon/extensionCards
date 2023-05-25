@@ -1,7 +1,8 @@
 import React from "react";
+import { ExtTwitch } from "../twitchCard/ExtTwitch";
 
 const App = () => {
-	return <div>App</div>;
+	<ExtTwitch />;
 };
 
 export default App;
