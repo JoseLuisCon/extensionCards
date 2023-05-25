@@ -1,6 +1,452 @@
 /******/ (() => { // webpackBootstrap
-/******/ 	"use strict";
-/******/ 	var __webpack_modules__ = ({});
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 412:
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+"use strict";
+
+// EXTERNAL MODULE: ./node_modules/react/index.js
+var react = __webpack_require__(7294);
+// EXTERNAL MODULE: ./node_modules/react-dom/index.js
+var react_dom = __webpack_require__(3935);
+;// CONCATENATED MODULE: ./src/util/Authentication/Authentication.js
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var jwt = __webpack_require__(9704);
+
+/**
+ * Helper class for authentication against an EBS service. Allows the storage of a token to be accessed across componenents. 
+ * This is not meant to be a source of truth. Use only for presentational purposes. 
+ */
+var Authentication = /*#__PURE__*/function () {
+  function Authentication(token, opaque_id) {
+    _classCallCheck(this, Authentication);
+    this.state = {
+      token: token,
+      opaque_id: opaque_id,
+      user_id: false,
+      isMod: false,
+      role: ""
+    };
+  }
+  _createClass(Authentication, [{
+    key: "isLoggedIn",
+    value: function isLoggedIn() {
+      return this.state.opaque_id[0] === 'U' ? true : false;
+    }
+
+    // This does guarantee the user is a moderator- this is fairly simple to bypass - so pass the JWT and verify
+    // server-side that this is true. This, however, allows you to render client-side UI for users without holding on a backend to verify the JWT. 
+    // Additionally, this will only show if the user shared their ID, otherwise it will return false. 
+  }, {
+    key: "isModerator",
+    value: function isModerator() {
+      return this.state.isMod;
+    }
+
+    // similar to mod status, this isn't always verifiable, so have your backend verify before proceeding. 
+  }, {
+    key: "hasSharedId",
+    value: function hasSharedId() {
+      return !!this.state.user_id;
+    }
+  }, {
+    key: "getUserId",
+    value: function getUserId() {
+      return this.state.user_id;
+    }
+  }, {
+    key: "getOpaqueId",
+    value: function getOpaqueId() {
+      return this.state.opaque_id;
+    }
+
+    // set the token in the Authentication componenent state
+    // this is naive, and will work with whatever token is returned. under no circumstances should you use this logic to trust private data- you should always verify the token on the backend before displaying that data. 
+  }, {
+    key: "setToken",
+    value: function setToken(token, opaque_id) {
+      var isMod = false;
+      var role = "";
+      var user_id = "";
+      try {
+        var decoded = jwt.decode(token);
+        if (decoded.role === 'broadcaster' || decoded.role === 'moderator') {
+          isMod = true;
+        }
+        user_id = decoded.user_id;
+        role = decoded.role;
+      } catch (e) {
+        token = '';
+        opaque_id = '';
+      }
+      this.state = {
+        token: token,
+        opaque_id: opaque_id,
+        isMod: isMod,
+        user_id: user_id,
+        role: role
+      };
+    }
+
+    // checks to ensure there is a valid token in the state
+  }, {
+    key: "isAuthenticated",
+    value: function isAuthenticated() {
+      if (this.state.token && this.state.opaque_id) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    /**
+     * Makes a call against a given endpoint using a specific method. 
+     * 
+     * Returns a Promise with the Request() object per fetch documentation.
+     * 
+     */
+  }, {
+    key: "makeCall",
+    value: function makeCall(url) {
+      var _this = this;
+      var method = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "GET";
+      return new Promise(function (resolve, reject) {
+        if (_this.isAuthenticated()) {
+          var headers = {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer ".concat(_this.state.token)
+          };
+          fetch(url, {
+            method: method,
+            headers: headers
+          }).then(function (response) {
+            return resolve(response);
+          })["catch"](function (e) {
+            return reject(e);
+          });
+        } else {
+          reject('Unauthorized');
+        }
+      });
+    }
+  }]);
+  return Authentication;
+}();
+
+// EXTERNAL MODULE: ./src/components/LiveConfigPage/LiveConfigPage.css
+var LiveConfigPage = __webpack_require__(4956);
+;// CONCATENATED MODULE: ./src/components/LiveConfigPage/LiveConfigPage.js
+function LiveConfigPage_typeof(obj) { "@babel/helpers - typeof"; return LiveConfigPage_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, LiveConfigPage_typeof(obj); }
+function LiveConfigPage_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function LiveConfigPage_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, LiveConfigPage_toPropertyKey(descriptor.key), descriptor); } }
+function LiveConfigPage_createClass(Constructor, protoProps, staticProps) { if (protoProps) LiveConfigPage_defineProperties(Constructor.prototype, protoProps); if (staticProps) LiveConfigPage_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function LiveConfigPage_toPropertyKey(arg) { var key = LiveConfigPage_toPrimitive(arg, "string"); return LiveConfigPage_typeof(key) === "symbol" ? key : String(key); }
+function LiveConfigPage_toPrimitive(input, hint) { if (LiveConfigPage_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (LiveConfigPage_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (LiveConfigPage_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var LiveConfigPage_LiveConfigPage = /*#__PURE__*/function (_React$Component) {
+  _inherits(LiveConfigPage, _React$Component);
+  var _super = _createSuper(LiveConfigPage);
+  function LiveConfigPage(props) {
+    var _this;
+    LiveConfigPage_classCallCheck(this, LiveConfigPage);
+    _this = _super.call(this, props);
+    _this.Authentication = new Authentication();
+
+    //if the extension is running on twitch or dev rig, set the shorthand here. otherwise, set to null. 
+    _this.twitch = window.Twitch ? window.Twitch.ext : null;
+    _this.state = {
+      finishedLoading: false,
+      theme: 'light'
+    };
+    return _this;
+  }
+  LiveConfigPage_createClass(LiveConfigPage, [{
+    key: "contextUpdate",
+    value: function contextUpdate(context, delta) {
+      if (delta.includes('theme')) {
+        this.setState(function () {
+          return {
+            theme: context.theme
+          };
+        });
+      }
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+      if (this.twitch) {
+        this.twitch.onAuthorized(function (auth) {
+          _this2.Authentication.setToken(auth.token, auth.userId);
+          if (!_this2.state.finishedLoading) {
+            // if the component hasn't finished loading (as in we've not set up after getting a token), let's set it up now.
+
+            // now we've done the setup for the component, let's set the state to true to force a rerender with the correct data.
+            _this2.setState(function () {
+              return {
+                finishedLoading: true
+              };
+            });
+          }
+        });
+        this.twitch.listen('broadcast', function (target, contentType, body) {
+          _this2.twitch.rig.log("New PubSub message!\n".concat(target, "\n").concat(contentType, "\n").concat(body));
+          // now that you've got a listener, do something with the result... 
+
+          // do something...
+        });
+
+        this.twitch.onContext(function (context, delta) {
+          _this2.contextUpdate(context, delta);
+        });
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.twitch) {
+        this.twitch.unlisten('broadcast', function () {
+          return console.log('successfully unlistened');
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      if (this.state.finishedLoading) {
+        return /*#__PURE__*/react.createElement("div", {
+          className: "LiveConfigPage"
+        }, /*#__PURE__*/react.createElement("div", {
+          className: this.state.theme === 'light' ? 'LiveConfigPage-light' : 'LiveConfigPage-dark'
+        }, /*#__PURE__*/react.createElement("p", null, "Hello world!"), /*#__PURE__*/react.createElement("p", null, "This is the live config page! ")));
+      } else {
+        return /*#__PURE__*/react.createElement("div", {
+          className: "LiveConfigPage"
+        });
+      }
+    }
+  }]);
+  return LiveConfigPage;
+}(react.Component);
+
+;// CONCATENATED MODULE: ./src/LiveConfig.js
+
+
+
+react_dom.render( /*#__PURE__*/react.createElement(LiveConfigPage_LiveConfigPage, null), document.getElementById("root"));
+
+/***/ }),
+
+/***/ 2049:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8081);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5879);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".LiveConfigPage {\n    font-family: Arial, Helvetica, sans-serif;\n}\n\n.LiveConfigPage-light{\n    color:#232127;\n}\n\n.LiveConfigPage-dark{\n    color:#e5e3e8;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ 4956:
+/***/ ((module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3379);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7795);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(569);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3565);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9216);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4589);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2049);
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+if (true) {
+  if (!_node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+  var p;
+  for (p in a) {
+    if (isNamedExport && p === "default") {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+  for (p in b) {
+    if (isNamedExport && p === "default") {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    if (!a[p]) {
+      return false;
+    }
+  }
+  return true;
+};
+    var isNamedExport = !_node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals;
+    var oldLocals = isNamedExport ? _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__ : _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals;
+
+    module.hot.accept(
+      2049,
+      __WEBPACK_OUTDATED_DEPENDENCIES__ => { /* harmony import */ _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(2049);
+(function () {
+        if (!isEqualLocals(oldLocals, isNamedExport ? _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__ : _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals, isNamedExport)) {
+                module.hot.invalidate();
+
+                return;
+              }
+
+              oldLocals = isNamedExport ? _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__ : _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals;
+
+              update(_node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"]);
+      })(__WEBPACK_OUTDATED_DEPENDENCIES__); }
+    )
+  }
+
+  module.hot.dispose(function() {
+    update();
+  });
+}
+
+
+
+       /* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_LiveConfigPage_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ 950:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 6601:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 9214:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 8623:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 7748:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 5568:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 6619:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 7108:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 2361:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 4616:
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ })
+
+/******/ 	});
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
@@ -115,12 +561,12 @@
 /******/ 	
 /******/ 	/* webpack/runtime/get update manifest filename */
 /******/ 	(() => {
-/******/ 		__webpack_require__.hmrF = () => ("runtime." + __webpack_require__.h() + ".hot-update.json");
+/******/ 		__webpack_require__.hmrF = () => ("LiveConfig." + __webpack_require__.h() + ".hot-update.json");
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("0a398ddbeb7e5819acfe")
+/******/ 		__webpack_require__.h = () => ("c0483e08b1bb7fc64e6d")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -630,7 +1076,7 @@
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = __webpack_require__.hmrS_jsonp = __webpack_require__.hmrS_jsonp || {
-/******/ 			666: 0
+/******/ 			714: 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -1172,6 +1618,10 @@
 /************************************************************************/
 /******/ 	
 /******/ 	// module cache are used so entry inlining is disabled
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [935,772], () => (__webpack_require__(412)))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;

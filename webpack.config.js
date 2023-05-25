@@ -108,7 +108,7 @@ module.exports = (env, argv) => {
 			},
 		},
 		output: {
-			filename: "[name].bandle.js",
+			filename: "[name].bundle.js",
 			path: bundlePath,
 		},
 		plugins,
