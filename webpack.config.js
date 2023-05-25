@@ -3,7 +3,6 @@ const path = require("path");
 const webpack = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const entryPoints = {
 	VideoComponent: {
@@ -44,10 +43,7 @@ const bundlePath = path.resolve(__dirname, "build/");
 module.exports = (env, argv) => {
 	const entry = {};
 
-	let plugins = [
-		new CleanWebpackPlugin({ dry: true, cleanOnceBeforeBuildPatterns: [path.join(process.cwd(), "build/**/*")] }),
-		new webpack.HotModuleReplacementPlugin(),
-	];
+	let plugins = [new webpack.HotModuleReplacementPlugin()];
 
 	Object.keys(entryPoints).forEach((key) => {
 		if (entryPoints[key].build) {
@@ -117,6 +113,7 @@ module.exports = (env, argv) => {
 		output: {
 			filename: "[name].bundle.js",
 			path: bundlePath,
+			clean: true,
 		},
 		plugins,
 	};

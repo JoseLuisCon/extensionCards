@@ -1,3 +1,5 @@
+import React from "react";
+
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Container, Graphics, Stage as PixiStage, useApp } from "@pixi/react";
 
@@ -27,7 +29,7 @@ const getPositionBaraja = () => {
 };
 
 const options = {
-	backgroundColor: "0x8fd7c500",
+	backgroundColor: 0xa3c2ff,
 	raf: false,
 	autoDensity: true,
 	antialias: true,

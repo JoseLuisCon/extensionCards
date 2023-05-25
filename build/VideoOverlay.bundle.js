@@ -8,8 +8,8 @@
 
 // EXTERNAL MODULE: ./node_modules/react/index.js
 var react = __webpack_require__(7294);
-// EXTERNAL MODULE: ./node_modules/react-dom/index.js
-var react_dom = __webpack_require__(3935);
+// EXTERNAL MODULE: ./node_modules/react-dom/client.js
+var client = __webpack_require__(745);
 // EXTERNAL MODULE: ./node_modules/@pixi/react/dist/index.es.js
 var index_es = __webpack_require__(8810);
 // EXTERNAL MODULE: ./node_modules/pixi.js/lib/index.mjs + 65 modules
@@ -1427,6 +1427,7 @@ function ExtTwitch_objectWithoutPropertiesLoose(source, excluded) { if (source =
 
 
 
+
 lib/* settings.PREFER_ENV */.Xdb.PREFER_ENV = lib/* ENV.WEBGL2 */.ViN.WEBGL2;
 var getSize = function getSize() {
   return {
@@ -1445,7 +1446,7 @@ var getPositionBaraja = function getPositionBaraja() {
   };
 };
 var options = {
-  backgroundColor: "0x8fd7c500",
+  backgroundColor: 0xa3c2ff,
   raf: false,
   autoDensity: true,
   antialias: true
@@ -1457,8 +1458,8 @@ var ContextBridge = function ContextBridge(_ref) {
   var children = _ref.children,
     Context = _ref.Context,
     render = _ref.render;
-  return /*#__PURE__*/React.createElement(Context.Consumer, null, function (value) {
-    return render( /*#__PURE__*/React.createElement(Context.Provider, {
+  return /*#__PURE__*/react.createElement(Context.Consumer, null, function (value) {
+    return render( /*#__PURE__*/react.createElement(Context.Provider, {
       value: value
     }, children));
   });
@@ -1466,10 +1467,10 @@ var ContextBridge = function ContextBridge(_ref) {
 var Stage = function Stage(_ref2) {
   var children = _ref2.children,
     props = ExtTwitch_objectWithoutProperties(_ref2, ExtTwitch_excluded);
-  return /*#__PURE__*/React.createElement(ContextBridge, {
+  return /*#__PURE__*/react.createElement(ContextBridge, {
     Context: contextBaraja,
     render: function render(children) {
-      return /*#__PURE__*/React.createElement(index_es/* Stage */.Hf, props, children);
+      return /*#__PURE__*/react.createElement(index_es/* Stage */.Hf, props, children);
     }
   }, children);
 };
@@ -1506,7 +1507,7 @@ var ExtTwitch = function ExtTwitch() {
   (0,react.useEffect)(function () {
     setTiendaCartas(createDataSprite(mockData));
   }, []);
-  return /*#__PURE__*/React.createElement(contextBaraja.Provider, {
+  return /*#__PURE__*/react.createElement(contextBaraja.Provider, {
     value: {
       selectedCard: selectedCard,
       setSelectedCard: setSelectedCard,
@@ -1517,13 +1518,13 @@ var ExtTwitch = function ExtTwitch() {
       cartasBaraja: cartasBaraja,
       setCartasBaraja: setCartasBaraja
     }
-  }, /*#__PURE__*/React.createElement(Stage, _extends({}, initialSize, {
+  }, /*#__PURE__*/react.createElement(Stage, _extends({}, initialSize, {
     options: options
-  }), /*#__PURE__*/React.createElement(index_es/* Container */.W2, {
+  }), /*#__PURE__*/react.createElement(index_es/* Container */.W2, {
     sortableChildren: true,
     interactive: true,
     ref: containerBarajaRef
-  }, /*#__PURE__*/React.createElement(PurchasedCards, null), /*#__PURE__*/React.createElement(CardStore, null), /*#__PURE__*/React.createElement(Baraja, {
+  }, /*#__PURE__*/react.createElement(PurchasedCards, null), /*#__PURE__*/react.createElement(CardStore, null), /*#__PURE__*/react.createElement(Baraja, {
     pos: getPositionBaraja()
   }))));
 };
@@ -1531,14 +1532,29 @@ var ExtTwitch = function ExtTwitch() {
 
 
 var App = function App() {
-  /*#__PURE__*/react.createElement(ExtTwitch, null);
+  return /*#__PURE__*/react.createElement(ExtTwitch, null);
 };
 /* harmony default export */ const App_App = (App);
 ;// CONCATENATED MODULE: ./src/VideoOverlay.js
 
 
 
-react_dom.render( /*#__PURE__*/react.createElement(App_App, null), document.getElementById("root"));
+var root = client.createRoot(document.getElementById("root"));
+root.render( /*#__PURE__*/react.createElement(App_App, null));
+
+/***/ }),
+
+/***/ 745:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+var m = __webpack_require__(3935);
+if (true) {
+  exports.createRoot = m.createRoot;
+  exports.hydrateRoot = m.hydrateRoot;
+} else { var i; }
+
 
 /***/ })
 
@@ -1662,7 +1678,7 @@ react_dom.render( /*#__PURE__*/react.createElement(App_App, null), document.getE
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("e9ba00c125d32ff61429")
+/******/ 		__webpack_require__.h = () => ("139e52a5152988917555")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -2711,7 +2727,7 @@ react_dom.render( /*#__PURE__*/react.createElement(App_App, null), document.getE
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [114,961], () => (__webpack_require__(3792)))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [935,961], () => (__webpack_require__(3792)))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

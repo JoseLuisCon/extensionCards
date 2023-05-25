@@ -66,4 +66,4 @@ typings/
 .env
 
 # Finalized files
-dist/
+build/
