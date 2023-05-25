@@ -42,9 +42,6 @@ const entryPoints = {
 const bundlePath = path.resolve(__dirname, "build/");
 
 module.exports = (env, argv) => {
-	console.log("🚀 ~ file: webpack.config.js:45 ~ env:", env);
-	console.log("🚀 ~ file: webpack.config.js:45 ~ argv:", argv);
-	console.log("🚀 ~ file: webpack.config.js:45 ~ argv:", process.env.NODE_ENV);
 	const entry = {};
 
 	let plugins = [new CleanWebpackPlugin({ cleanOnceBeforeBuildPatterns: ["build"] }), new webpack.HotModuleReplacementPlugin()];
@@ -102,7 +99,7 @@ module.exports = (env, argv) => {
 			],
 		},
 		resolve: {
-			extensions: [" *", ".js", ".jsx"],
+			extensions: ["*", ".js", ".jsx"],
 			fallback: {
 				assert: require.resolve("assert"),
 				buffer: require.resolve("buffer"),
@@ -117,11 +114,13 @@ module.exports = (env, argv) => {
 		plugins,
 	};
 
-	if (argv.mode === "development") {
+	if (argv.open) {
 		config.devtool = "source-map";
 		config.devServer = {
-			contentBase: path.join(__dirname, "public"),
-			host: argv.devrig ? "localhost.rig.twitch.tv" : "localhost",
+			static: {
+				directory: path.join(__dirname, "public"),
+			},
+			host: "localhost",
 			headers: {
 				"Access-Control-Allow-Origin": "*",
 			},

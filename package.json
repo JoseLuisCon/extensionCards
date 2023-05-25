@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack server ",
+    "dev": "webpack serve --open --mode=development",
     "build": "webpack --mode=production",
     "postinstall": "sh install_cert.sh"
   },
@@ -29,11 +29,13 @@
     "webpack-dev-server": "^4.15.0"
   },
   "dependencies": {
+    "@pixi/react": "^7.1.0",
     "browserify": "^17.0.0",
     "buffer": "^6.0.3",
     "buffer-equal-constant-time": "^1.0.1",
     "console-browserify": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
+    "pixi.js": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
