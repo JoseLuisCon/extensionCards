@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 507:
+/***/ 5786:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 
@@ -260,14 +260,13 @@ var Baraja = function Baraja(_ref) {
   var pos = _ref.pos;
   var _useContext = (0,react.useContext)(contextBaraja),
     cartasBaraja = _useContext.cartasBaraja,
-    setCartasBaraja = _useContext.setCartasBaraja;
+    setCartasBaraja = _useContext.setCartasBaraja,
+    selectedCard = _useContext.selectedCard,
+    setSelectedCard = _useContext.setSelectedCard;
   var _useState = (0,react.useState)([]),
     _useState2 = Baraja_slicedToArray(_useState, 2),
     cartasSprite = _useState2[0],
     setCartasSprite = _useState2[1];
-  var _useContext2 = (0,react.useContext)(contextBaraja),
-    selectedCard = _useContext2.selectedCard,
-    setSelectedCard = _useContext2.setSelectedCard;
   var isDragging = (0,react.useRef)(false);
   var isRetorning = (0,react.useRef)(false);
   var initialProps = (0,react.useRef)(null);
@@ -279,9 +278,10 @@ var Baraja = function Baraja(_ref) {
   var alpha = (0,react.useRef)(1);
   var app = (0,index_es/* useApp */.Y0)();
   var createDataSprite = function createDataSprite(data) {
-    console.log("🚀 ~ file: Baraja.jsx:56 ~ createDataSprite ~ data:", data);
+    if (data.length === 0) return;
     return data.map(function (_ref2, index) {
-      var img = _ref2.img;
+      var img = _ref2.img,
+        scale = _ref2.scale;
       return {
         id: index,
         img: img,
@@ -832,7 +832,9 @@ var CardDetail = function CardDetail(_ref) {
         textCard.current = value;
         return;
       }
+
       // Cargamos las texturas desde las url
+
       lib/* Assets.load */.deM.load(value).then(function (texture) {
         var newTexture = {
           id: key,
@@ -842,18 +844,22 @@ var CardDetail = function CardDetail(_ref) {
         // Obtenemos un array con las texturas
         arrayTextures.current = [].concat(CardDetail_toConsumableArray(arrayTextures.current), [newTexture]);
         arrayTextures.current.length === 5 && setImgSprt(arrayTextures.current);
+        return arrayTextures.current;
       })["catch"](function (err) {
         return console.log(err);
       });
+
+      // Resolvemos todas las promesas y seteamos el array de texturas
+
+      // setPropsText(({ x, y, width, fontSize, ...prev }) => ({
+      // 	x: (scale.x * -32) / 0.14,
+      // 	y: 15,
+      // 	width: (scale.x * 75) / 0.16,
+      // 	fontSize: (scale.x * 8) / 0.16,
+      // 	...prev,
+      // }));
+      // Calculamos las proporciones del texto y las seteamos
     });
-    // setPropsText(({ x, y, width, fontSize, ...prev }) => ({
-    // 	x: (scale.x * -32) / 0.14,
-    // 	y: 15,
-    // 	width: (scale.x * 75) / 0.16,
-    // 	fontSize: (scale.x * 8) / 0.16,
-    // 	...prev,
-    // }));
-    // Calculamos las proporciones del texto y las seteamos
   };
 
   (0,react.useEffect)(function () {
@@ -888,7 +894,7 @@ var CardDetail = function CardDetail(_ref) {
       return setScaleUpdate(0.15);
     },
     onclick: function onclick(e) {
-      return e.detail === 2 ? comprarCarta(e.target.id) : null;
+      e.detail === 2 ? comprarCarta(e.target.id) : null;
     },
     cursor: "pointer"
 
@@ -971,8 +977,8 @@ var CardStoreList = function CardStoreList(_ref) {
   var _useContext = (0,react.useContext)(contextBaraja),
     tiendaCartas = _useContext.tiendaCartas,
     setTiendaCartas = _useContext.setTiendaCartas,
-    cartasCompradas = _useContext.cartasCompradas,
-    setCartasCompradas = _useContext.setCartasCompradas;
+    cartasBaraja = _useContext.cartasBaraja,
+    setCartasBaraja = _useContext.setCartasBaraja;
   var _useState = (0,react.useState)({
       width: 0,
       height: 0
@@ -996,8 +1002,8 @@ var CardStoreList = function CardStoreList(_ref) {
     var carta = tiendaCartas.find(function (carta) {
       return carta.id === id;
     });
-    var cartasCompradasNew = [].concat(CardStoreList_toConsumableArray(cartasCompradas), [carta]);
-    setCartasCompradas(cartasCompradasNew);
+    var cartasCompradasNew = [].concat(CardStoreList_toConsumableArray(cartasBaraja), [carta]);
+    setCartasBaraja(cartasCompradasNew);
   };
   var draw = function draw(g) {
     g === null || g === void 0 ? void 0 : g.beginFill(0xff0000);
@@ -1035,6 +1041,8 @@ var CardStoreList = function CardStoreList(_ref) {
     });
   }));
 };
+;// CONCATENATED MODULE: ./src/assets/logo192.png
+const logo192_namespaceObject = __webpack_require__.p + "64b6abdbeb9a1690d34c.png";
 ;// CONCATENATED MODULE: ./src/components/cardStore/CardStore.jsx
 function CardStore_slicedToArray(arr, i) { return CardStore_arrayWithHoles(arr) || CardStore_iterableToArrayLimit(arr, i) || CardStore_unsupportedIterableToArray(arr, i) || CardStore_nonIterableRest(); }
 function CardStore_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -1042,6 +1050,8 @@ function CardStore_unsupportedIterableToArray(o, minLen) { if (!o) return; if (t
 function CardStore_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function CardStore_iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function CardStore_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -1136,278 +1146,12 @@ var CardStore = function CardStore() {
       e.stopPropagation();
       setShowStore(!showStore);
     },
-    image: "logo192.png",
+    image: logo192_namespaceObject,
     x: 1,
     scale: 0.25
   }), showStore && /*#__PURE__*/react.createElement(CardStoreList, {
     pos: [60, 0]
   }));
-};
-;// CONCATENATED MODULE: ./src/components/purchasedCards/PurchasedDetail.jsx
-function PurchasedDetail_toConsumableArray(arr) { return PurchasedDetail_arrayWithoutHoles(arr) || PurchasedDetail_iterableToArray(arr) || PurchasedDetail_unsupportedIterableToArray(arr) || PurchasedDetail_nonIterableSpread(); }
-function PurchasedDetail_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function PurchasedDetail_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function PurchasedDetail_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return PurchasedDetail_arrayLikeToArray(arr); }
-function PurchasedDetail_slicedToArray(arr, i) { return PurchasedDetail_arrayWithHoles(arr) || PurchasedDetail_iterableToArrayLimit(arr, i) || PurchasedDetail_unsupportedIterableToArray(arr, i) || PurchasedDetail_nonIterableRest(); }
-function PurchasedDetail_nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function PurchasedDetail_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return PurchasedDetail_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return PurchasedDetail_arrayLikeToArray(o, minLen); }
-function PurchasedDetail_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function PurchasedDetail_iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function PurchasedDetail_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-var PurchasedDetail_getOrderZIndex = function getOrderZIndex(id) {
-  switch (id) {
-    case "bg-border":
-      return 1;
-    case "bg-card":
-      return 2;
-    case "rarity":
-      return 3;
-    case "logo":
-      return 4;
-    case "img":
-      return 5;
-    case "text":
-      return 6;
-    default:
-      return 0;
-  }
-};
-var PurchasedDetail = function PurchasedDetail(_ref) {
-  var id = _ref.id,
-    image = _ref.image,
-    name = _ref.name,
-    scale = _ref.scale,
-    position = _ref.position,
-    anyadirCartaBaraja = _ref.anyadirCartaBaraja;
-  console.log("🚀 ~ file: PurchasedDetail.jsx:27 ~ PurchasedDetail ~ scale:", scale);
-  var _useContext = (0,react.useContext)(contextBaraja),
-    cartasCompradas = _useContext.cartasCompradas;
-  var _useState = (0,react.useState)(scale),
-    _useState2 = PurchasedDetail_slicedToArray(_useState, 2),
-    scaleFocus = _useState2[0],
-    setScaleFocus = _useState2[1];
-  var _useState3 = (0,react.useState)(null),
-    _useState4 = PurchasedDetail_slicedToArray(_useState3, 2),
-    imgSprt = _useState4[0],
-    setImgSprt = _useState4[1];
-  var _useState5 = (0,react.useState)({
-      x: 0,
-      y: 0,
-      width: 80,
-      fontSize: 8
-    }),
-    _useState6 = PurchasedDetail_slicedToArray(_useState5, 2),
-    propsText = _useState6[0],
-    setPropsText = _useState6[1];
-  var arrayTextures = (0,react.useRef)([]);
-  var textCard = (0,react.useRef)(null);
-  var cargarImagenUrl = function cargarImagenUrl() {
-    var arrayPropsCard = Object.entries(image);
-    arrayTextures.current = [];
-    arrayPropsCard.forEach(function (item, index) {
-      var _item = PurchasedDetail_slicedToArray(item, 2),
-        key = _item[0],
-        value = _item[1];
-      if (key === "text") {
-        textCard.current = value;
-        return;
-      }
-      // Cargamos las texturas desde las url
-      lib/* Assets.load */.deM.load(value).then(function (texture) {
-        var newTexture = {
-          id: key,
-          texture: texture
-        };
-        if (!newTexture) return;
-        // Obtenemos un array con las texturas
-        arrayTextures.current = [].concat(PurchasedDetail_toConsumableArray(arrayTextures.current), [newTexture]);
-        arrayTextures.current.length === 5 && setImgSprt(arrayTextures.current);
-      })["catch"](function (err) {
-        return console.log(err);
-      });
-    });
-
-    // setPropsText(({ x, y, width, fontSize, ...prev }) => ({
-    // 	x: (scale.x * -32) / 0.14,
-    // 	y: 15,
-    // 	width: (scale.x * 75) / 0.16,
-    // 	fontSize: (scale.x * 8) / 0.16,
-    // 	...prev,
-    // }));
-    // Calculamos las proporciones del texto y las seteamos
-  };
-
-  (0,react.useEffect)(function () {
-    cargarImagenUrl();
-    return function () {
-      setImgSprt(null);
-      textCard.current = null;
-    };
-  }, []);
-  (0,react.useEffect)(function () {
-    cargarImagenUrl();
-    return function () {
-      setImgSprt(null);
-      textCard.current = null;
-    };
-  }, [cartasCompradas === null || cartasCompradas === void 0 ? void 0 : cartasCompradas.length]);
-  return /*#__PURE__*/react.createElement(react.Fragment, null, /*#__PURE__*/react.createElement(index_es/* Container */.W2, {
-    position: position
-    // zIndex={zIndex}
-    ,
-    sortableChildren: true,
-    interactive: true,
-    id: id
-    // pointerdown={(e) => console.log("down", e.detail)}
-    // pointerup={clickEnd}
-    // pointermove={mouseMove}
-    ,
-    pointerover: function pointerover() {
-      return setScaleFocus({
-        x: 0.16,
-        y: 0.16
-      });
-    },
-    pointerout: function pointerout() {
-      return setScaleFocus({
-        x: 0.14,
-        y: 0.14
-      });
-    },
-    onclick: function onclick(e) {
-      return e.detail === 2 ? anyadirCartaBaraja(e.target.id) : null;
-    },
-    cursor: "pointer",
-    scale: scaleFocus
-    // anchor={anchor}
-  }, imgSprt && imgSprt.map(function (_ref2, index) {
-    var id = _ref2.id,
-      texture = _ref2.texture;
-    var zIndex = PurchasedDetail_getOrderZIndex(id);
-    return /*#__PURE__*/react.createElement(index_es/* Sprite */.jy, {
-      name: name,
-      texture: texture,
-      ref: id === 0 ? referenciaSprite : null,
-      key: index,
-      scale: scale
-    });
-  }), /*#__PURE__*/react.createElement(index_es/* Text */.xv, {
-    text: textCard.current
-    // zIndex={9}
-    // width={propsText.width}
-    ,
-    x: 20,
-    y: 15
-    // // visible={visibleText}
-    ,
-    style: new lib/* TextStyle */.pn8({
-      fontFamily: ["Roboto", "Source Sans Pro", "Helvetica", "sans-serif"],
-      fontSize: 10,
-      fill: ["#e4e3e8", "#fdfcff"],
-      stroke: "#eef1f5",
-      align: "center",
-      wordWrap: true,
-      wordWrapWidth: 50
-    })
-  })));
-};
-;// CONCATENATED MODULE: ./src/components/purchasedCards/PurchasedCardsList.jsx
-function PurchasedCardsList_typeof(obj) { "@babel/helpers - typeof"; return PurchasedCardsList_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, PurchasedCardsList_typeof(obj); }
-function PurchasedCardsList_toConsumableArray(arr) { return PurchasedCardsList_arrayWithoutHoles(arr) || PurchasedCardsList_iterableToArray(arr) || PurchasedCardsList_unsupportedIterableToArray(arr) || PurchasedCardsList_nonIterableSpread(); }
-function PurchasedCardsList_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function PurchasedCardsList_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return PurchasedCardsList_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return PurchasedCardsList_arrayLikeToArray(o, minLen); }
-function PurchasedCardsList_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function PurchasedCardsList_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return PurchasedCardsList_arrayLikeToArray(arr); }
-function PurchasedCardsList_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function PurchasedCardsList_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function PurchasedCardsList_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? PurchasedCardsList_ownKeys(Object(source), !0).forEach(function (key) { PurchasedCardsList_defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : PurchasedCardsList_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function PurchasedCardsList_defineProperty(obj, key, value) { key = PurchasedCardsList_toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function PurchasedCardsList_toPropertyKey(arg) { var key = PurchasedCardsList_toPrimitive(arg, "string"); return PurchasedCardsList_typeof(key) === "symbol" ? key : String(key); }
-function PurchasedCardsList_toPrimitive(input, hint) { if (PurchasedCardsList_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (PurchasedCardsList_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-
-
-
-
-
-function PurchasedCardsList_ordenarSprites(cartasCompradas, ancho, alto) {
-  var gap = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 5;
-  var newArrayCartasCompradas = [];
-  var x = 10;
-  var y = 20;
-  cartasCompradas.forEach(function (carta, index) {
-    var cartaNew = PurchasedCardsList_objectSpread({}, carta);
-    cartaNew.pos = [x, y];
-    cartaNew.scale = 1.2;
-    newArrayCartasCompradas.push(cartaNew);
-    x += ancho + gap;
-  });
-  return newArrayCartasCompradas;
-}
-var PurchasedCardsList = function PurchasedCardsList(_ref) {
-  var pos = _ref.pos;
-  var _useContext = (0,react.useContext)(contextBaraja),
-    cartasCompradas = _useContext.cartasCompradas,
-    setCartasCompradas = _useContext.setCartasCompradas,
-    cartasBaraja = _useContext.cartasBaraja,
-    setCartasBaraja = _useContext.setCartasBaraja;
-  (0,react.useEffect)(function () {
-    setCartasCompradas(PurchasedCardsList_ordenarSprites(cartasCompradas, 100, 110, 5));
-  }, [cartasCompradas.length]);
-  var anyadirCartaBaraja = function anyadirCartaBaraja(id) {
-    var carta = cartasCompradas.find(function (carta) {
-      return carta.id === id;
-    });
-    var index = cartasCompradas.indexOf(carta);
-    var newCartas = PurchasedCardsList_toConsumableArray(cartasCompradas);
-    newCartas.splice(index, 1);
-    setCartasCompradas(newCartas);
-    var cartasBarajasNew = [].concat(PurchasedCardsList_toConsumableArray(cartasBaraja), [carta]);
-    setCartasBaraja(cartasBarajasNew);
-  };
-  (0,react.useEffect)(function () {
-    if ((cartasCompradas === null || cartasCompradas === void 0 ? void 0 : cartasCompradas.length) === 0) return;
-    setCartasCompradas(PurchasedCardsList_ordenarSprites(cartasCompradas, 100, 110, 9));
-  }, [cartasCompradas === null || cartasCompradas === void 0 ? void 0 : cartasCompradas.length]);
-  return /*#__PURE__*/react.createElement(index_es/* Container */.W2, null, cartasCompradas && cartasCompradas.map(function (_ref2, index) {
-    var id = _ref2.id,
-      img = _ref2.img,
-      scale = _ref2.scale,
-      pos = _ref2.pos;
-    return /*#__PURE__*/react.createElement(PurchasedDetail, {
-      id: id,
-      key: index,
-      image: img,
-      scale: scale,
-      name: "carta" + id,
-      position: pos,
-      anyadirCartaBaraja: anyadirCartaBaraja
-    });
-  }));
-};
-;// CONCATENATED MODULE: ./src/components/purchasedCards/PurchasedCards.jsx
-
-
-
-
-
-var PurchasedCards_draw = function draw(g) {
-  g === null || g === void 0 ? void 0 : g.beginFill(0x021f0, 0.4);
-  g === null || g === void 0 ? void 0 : g.drawRoundedRect(100, 10, window.innerWidth / 2, window.innerHeight / 5, 15);
-  g === null || g === void 0 ? void 0 : g.endFill();
-};
-var PurchasedCards = function PurchasedCards() {
-  var _useContext = (0,react.useContext)(contextBaraja),
-    cartasCompradas = _useContext.cartasCompradas;
-  var mask = (0,react.useRef)(null);
-  return /*#__PURE__*/react.createElement(index_es/* Container */.W2, {
-    sortChildren: true
-  }, /*#__PURE__*/react.createElement(index_es/* Container */.W2, {
-    sortChildren: true
-  }, cartasCompradas && /*#__PURE__*/react.createElement(PurchasedCardsList, null)));
 };
 ;// CONCATENATED MODULE: ./src/components/twitchCard/ExtTwitch.jsx
 var ExtTwitch_excluded = ["children"];
@@ -1420,7 +1164,6 @@ function ExtTwitch_iterableToArrayLimit(arr, i) { var _i = null == arr ? null : 
 function ExtTwitch_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function ExtTwitch_objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = ExtTwitch_objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 function ExtTwitch_objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
 
 
 
@@ -1446,10 +1189,10 @@ var getPositionBaraja = function getPositionBaraja() {
   };
 };
 var options = {
-  backgroundColor: 0xa3c2ff,
   raf: false,
   autoDensity: true,
-  antialias: true
+  antialias: true,
+  BackgroundAlpha: 0
 };
 var contextBaraja = /*#__PURE__*/(0,react.createContext)();
 // CONTEXT BRIDGE para poder usar el contexto Pixi
@@ -1483,14 +1226,11 @@ var ExtTwitch = function ExtTwitch() {
     _useState4 = ExtTwitch_slicedToArray(_useState3, 2),
     tiendaCartas = _useState4[0],
     setTiendaCartas = _useState4[1];
+  //const [cartasCompradas, setCartasCompradas] = useState([]);
   var _useState5 = (0,react.useState)([]),
     _useState6 = ExtTwitch_slicedToArray(_useState5, 2),
-    cartasCompradas = _useState6[0],
-    setCartasCompradas = _useState6[1];
-  var _useState7 = (0,react.useState)([]),
-    _useState8 = ExtTwitch_slicedToArray(_useState7, 2),
-    cartasBaraja = _useState8[0],
-    setCartasBaraja = _useState8[1];
+    cartasBaraja = _useState6[0],
+    setCartasBaraja = _useState6[1];
   var containerBarajaRef = (0,react.useRef)(null);
   var createDataSprite = function createDataSprite(data) {
     return data.map(function (data, index) {
@@ -1513,8 +1253,6 @@ var ExtTwitch = function ExtTwitch() {
       setSelectedCard: setSelectedCard,
       tiendaCartas: tiendaCartas,
       setTiendaCartas: setTiendaCartas,
-      cartasCompradas: cartasCompradas,
-      setCartasCompradas: setCartasCompradas,
       cartasBaraja: cartasBaraja,
       setCartasBaraja: setCartasBaraja
     }
@@ -1524,7 +1262,7 @@ var ExtTwitch = function ExtTwitch() {
     sortableChildren: true,
     interactive: true,
     ref: containerBarajaRef
-  }, /*#__PURE__*/react.createElement(PurchasedCards, null), /*#__PURE__*/react.createElement(CardStore, null), /*#__PURE__*/react.createElement(Baraja, {
+  }, /*#__PURE__*/react.createElement(CardStore, null), /*#__PURE__*/react.createElement(Baraja, {
     pos: getPositionBaraja()
   }))));
 };
@@ -1678,7 +1416,7 @@ if (true) {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("139e52a5152988917555")
+/******/ 		__webpack_require__.h = () => ("18786a045f235348fd53")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -2727,7 +2465,7 @@ if (true) {
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [935,961], () => (__webpack_require__(507)))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [935,961], () => (__webpack_require__(5786)))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

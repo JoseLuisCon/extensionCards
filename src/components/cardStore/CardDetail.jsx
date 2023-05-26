@@ -111,7 +111,9 @@ export const CardDetail = ({ id, image, name, scale, position, comprarCarta }) =
 				// pointermove={mouseMove}
 				pointerover={(e) => setScaleUpdate(0.16)}
 				pointerout={(e) => setScaleUpdate(0.15)}
-				onclick={(e) => (e.detail === 2 ? comprarCarta(e.target.id) : null)}
+				onclick={(e) => {
+					e.detail === 2 ? comprarCarta(e.target.id) : null;
+				}}
 				cursor="pointer"
 
 				// anchor={anchor}

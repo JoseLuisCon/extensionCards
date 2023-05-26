@@ -4,6 +4,9 @@ import { CardStoreList } from "./CardStoreList";
 import { mockData } from "../baraja/data";
 import { contextBaraja } from "../twitchCard/ExtTwitch";
 
+import * as PIXI from "pixi.js";
+
+import logo from "../../assets/logo192.png";
 const draw = (g) => {
 	g?.beginFill(0x000000, 0.5);
 	g?.drawRoundedRect(0, 0, 50, 50, 15);
@@ -85,7 +88,7 @@ export const CardStore = () => {
 					e.stopPropagation();
 					setShowStore(!showStore);
 				}}
-				image="logo192.png"
+				image={logo}
 				x={1}
 				scale={0.25}
 			/>

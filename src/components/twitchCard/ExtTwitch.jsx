@@ -1,14 +1,13 @@
 import React from "react";
 
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { Container, Graphics, Stage as PixiStage, useApp } from "@pixi/react";
+import { createContext, useEffect, useRef, useState } from "react";
+import { Container, Stage as PixiStage } from "@pixi/react";
 
 import { Baraja } from "../baraja/Baraja";
 import { mockData } from "../baraja/data";
 
 import * as PIXI from "pixi.js";
 import { CardStore } from "../cardStore/CardStore";
-import { PurchasedCards } from "../purchasedCards/PurchasedCards";
 
 PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
@@ -29,10 +28,10 @@ const getPositionBaraja = () => {
 };
 
 const options = {
-	backgroundColor: 0x00000,
 	raf: false,
 	autoDensity: true,
 	antialias: true,
+	BackgroundAlpha: 0,
 };
 
 export const contextBaraja = createContext();
